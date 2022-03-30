@@ -1,0 +1,236 @@
+{
+	"info": {
+		"_postman_id": "89e346cb-2af3-4a07-b138-e9919f2e73d2",
+		"name": "mini_assignment 1",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "GET Request",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Checking http code\r",
+							"pm.test(\"Starus code is : 200\", ()=>{\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Checking response time\r",
+							"var time = pm.response.responseTime;\r",
+							"pm.test(`Response time is : ${time} ms`, () => {\r",
+							" pm.expect(pm.response.responseTime).to.be.below(400);\r",
+							"});\r",
+							"\r",
+							"// checking content type\r",
+							"var content_type = pm.response.headers.get(\"Content-Type\");\r",
+							"pm.test(`Response has a Content-Type : ${content_type}`, function() {\r",
+							"pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Checking user Id\", ()=>{\r",
+							"    response = pm.response.json();\r",
+							"    for(i=0; i<response.length;i++){\r",
+							"        if (response[i].userId == 4 && response[i].id== 40){\r",
+							"            return true;\r",
+							"        }\r",
+							"    }\r",
+							"    return false;\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Check type\", () => {\r",
+							"    _.each(pm.response.json().response, (item) => { \r",
+							"        pm.expect(typeof item[\"title\"]).to.be.oneOf(['string']);\r",
+							"    })\r",
+							"}) "
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{jason_holder}}/posts",
+					"host": [
+						"{{jason_holder}}"
+					],
+					"path": [
+						"posts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST request",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Checking http code\r",
+							"pm.test(\"Starus code is : 201\", ()=>{\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"// Checking response time\r",
+							"var time = pm.response.responseTime;\r",
+							"pm.test(`Response time is : ${time} ms`, () => {\r",
+							" pm.expect(pm.response.responseTime).to.be.below(400);\r",
+							"});\r",
+							"\r",
+							"// checking content type\r",
+							"var content_type = pm.response.headers.get(\"Content-Type\");\r",
+							"pm.test(`Response has a Content-Type : ${content_type}`, function() {\r",
+							"pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+							"});\r",
+							"\r",
+							"response = pm.response.json();\r",
+							"console.log(response)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Amit\",\r\n    \"job\": \"Manager\"\r\n}"
+				},
+				"url": {
+					"raw": "{{requres}}/api/users",
+					"host": [
+						"{{requres}}"
+					],
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT request",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Checking http code\r",
+							"pm.test(\"Starus code is : 200\", ()=>{\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Checking response time\r",
+							"var time = pm.response.responseTime;\r",
+							"pm.test(`Response time is : ${time} ms`, () => {\r",
+							" pm.expect(pm.response.responseTime).to.be.below(400);\r",
+							"});\r",
+							"\r",
+							"// checking content type\r",
+							"var content_type = pm.response.headers.get(\"Content-Type\");\r",
+							"pm.test(`Response has a Content-Type : ${content_type}`, function() {\r",
+							"pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+							"});\r",
+							"\r",
+							"response = pm.response.json();\r",
+							"pm.test(\"Name verification\", ()=>{\r",
+							"    pm.expect(response['name']).to.equal(\"Arun\");\r",
+							"    pm.expect(response['job']).to.equal(\"Manager\");\r",
+							"})\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\t\r\n    \"name\": \"Arun\",\r\n   \"job\": \"Manager\",\r\n   \"updatedAt\": \"2022-03-30T11:55:27.284Z\"\r\n}\r\n"
+				},
+				"url": {
+					"raw": "{{requres}}/api/users",
+					"host": [
+						"{{requres}}"
+					],
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE Request",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Checking http code\r",
+							"pm.test(\"Starus code is : 200\", ()=>{\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Checking response time\r",
+							"var time = pm.response.responseTime;\r",
+							"pm.test(`Response time is : ${time} ms`, () => {\r",
+							" pm.expect(pm.response.responseTime).to.be.below(400);\r",
+							"});\r",
+							"\r",
+							"// checking content type\r",
+							"var content_type = pm.response.headers.get(\"Content-Type\");\r",
+							"pm.test(`Response has a Content-Type : ${content_type}`, function() {\r",
+							"pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+							"});\r",
+							"\r",
+							"response = pm.response.json();\r",
+							"console.log(Object.keys(response).length);\r",
+							"pm.test(\"Verify the content is deleted successfully\",()=>{\r",
+							"    pm.expect(Object.keys(response).length).to.equal(0);\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{jason_holder}}/posts/1",
+					"host": [
+						"{{jason_holder}}"
+					],
+					"path": [
+						"posts",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
