@@ -1,5 +1,4 @@
 import static io.restassured.RestAssured.*;
-import static io.restassured.matcher.RestAssuredMatchers.*;
 import static org.hamcrest.Matchers.*;
 
 import io.restassured.RestAssured;
@@ -10,7 +9,7 @@ import org.testng.annotations.Test;
 import java.io.File;
 import java.util.List;
 
-public class RestAssuredTest {
+public class MiniAssignment1 {
     @Test
     public void testGetCall(){
         Response response = RestAssured
@@ -28,12 +27,6 @@ public class RestAssuredTest {
         then().
                 body("id", hasItem(40), "[39].userId", is(equalTo(4))).
                 statusCode(200);
-
-        for(Header header : allValue)
-        {
-            System.out.print(header.getName() +" : ");
-            System.out.println(header.getValue());
-        }
     }
 
     @Test
