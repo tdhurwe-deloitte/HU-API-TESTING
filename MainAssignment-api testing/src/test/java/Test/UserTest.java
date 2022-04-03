@@ -7,8 +7,7 @@ import org.json.JSONObject;
 import org.testng.annotations.Test;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
-import  io.restassured.path.json.JsonPath.*;
-import java.io.File;
+
 import java.util.List;
 
 import static io.restassured.RestAssured.*;
@@ -17,16 +16,15 @@ import static org.testng.AssertJUnit.assertTrue;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
-import Utils.ExcelReader.*;
 
-public class CreateUserTest {
+public class UserTest {
     RequestSpecification requestSpecification;
     String BaseUri = "https://api-nodejs-todolist.herokuapp.com";
 
     // Registering user
     @Test
     public void RegisterUserTest() throws Exception{
-        List<String> list = ExcelReader.GetCreateUserData(0);
+        List<String> list = ExcelReader.GetCreateUserData(0, 1);
         String name, email, password;
         int age;
         name = list.get(0);
@@ -44,10 +42,13 @@ public class CreateUserTest {
                 .header("Content-Type", "application/json");
         Response response = requestSpecification.post("/user/register");
         String ResponseBody = response.asString();
-//        System.out.println(ResponseBody);
+        System.out.println(ResponseBody);
         JsonPath jsonPath = new JsonPath(ResponseBody);
         String Token = jsonPath.getString("token");
+        String ID = jsonPath.getString("user._id");
         System.out.println(Token);  // write that token in the excel sheet
+        ExcelReader.TokenWriter(Token);
+        ExcelReader.IDWriter(ID);
         List<Header> allValues = response.getHeaders().getList("Content-Type");
         assertThat(response.statusCode(), is(equalTo(201)));
         assertThat(allValues.get(0).getValue(), equalTo("application/json; charset=utf-8"));
@@ -56,13 +57,14 @@ public class CreateUserTest {
     // Login user
     @Test(priority = 1)
     public void LoginUserTest() throws Exception{
-        List<String> list = ExcelReader.GetCreateUserData(0);
-        String email, password, name;
+        List<String> list = ExcelReader.GetCreateUserData(0, 1);
+        String email, password, name, id;
         int age;
         name = list.get(0);
         email = list.get(1);
         password = list.get(2);
         age = Integer.parseInt(list.get(3));
+        id = list.get(5);
         JSONObject parameter = new JSONObject();
         parameter.put("email", email);
         parameter.put("password", password);
@@ -75,12 +77,13 @@ public class CreateUserTest {
         List<Header> allValues = response.getHeaders().getList("Content-Type");
         String ResponseBody = response.asString();
         JsonPath jsonPath = new JsonPath(ResponseBody);
-        System.out.println(jsonPath.getString("token"));
+//        System.out.println(jsonPath.getString("token"));
         assertThat(response.statusCode(), is(equalTo(200)));
         assertThat(allValues.get(0).getValue(), equalTo("application/json; charset=utf-8"));
         // validating user credentials
         assertThat(jsonPath.getString("user.name"), is(equalTo(name)));
         assertThat(jsonPath.getString("user.email"), is(equalTo(email)));
+        assertThat(jsonPath.getString("user._id"), is(equalTo(id)));
     }
 
     // adding tasks
