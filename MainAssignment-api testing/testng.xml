@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="All Test Suite">
+    <test verbose="2" preserve-order="true" name="C:/Users/tdhurwe/Documents/API testing/MainAssignment-api testing">
+        <classes>
+            <class name="Test.UserTest">
+                <methods>
+                    <include name="RegisterUserTest"/>
+                    <include name="LoginUserTest"/>
+                    <include name="AddTaskTest"/>
+                    <include name="PageValidationTest"/>
+                    <include name="SameUserRegister"/>
+                    <include name="InvalidUserLogin"/>
+                    <include name="InvalidRequestBody"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+</suite>
